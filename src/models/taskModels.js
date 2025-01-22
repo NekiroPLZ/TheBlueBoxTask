@@ -55,4 +55,41 @@ export class taskModel {
       throw error;
     }
   }
-}
+
+    // Obtener tarea por ID
+    static async findTaskById(taskId) {
+      try {
+        const query = 'SELECT * FROM tasks WHERE id = $1';
+        const { rows } = await configPool.query(query, [taskId]);
+        return rows[0]; // Retorna la tarea si existe
+      } catch (error) {
+        console.error("Error finding task by ID:", error);
+        throw error;
+      }
+    }
+  
+    // Actualizar estado de la tarea
+    static async updateTaskStatus(taskId, status) {
+      try {
+        const query = 'UPDATE tasks SET status = $1 WHERE id = $2 RETURNING *';
+        const { rows } = await configPool.query(query, [status, taskId]);
+        return rows[0]; // Retorna la tarea actualizada
+      } catch (error) {
+        console.error("Error updating task status:", error);
+        throw error;
+      }
+    }
+  
+    // Archivar tarea
+    static async archiveTask(taskId) {
+      try {
+        const query = 'UPDATE tasks SET status = $1 WHERE id = $2 RETURNING *';
+        const { rows } = await configPool.query(query, ['archived', taskId]);
+        return rows[0]; // Retorna la tarea archivada
+      } catch (error) {
+        console.error("Error archiving task:", error);
+        throw error;
+      }
+    }
+  }
+

@@ -15,6 +15,10 @@ export const TaskRouterOpt = () => {
         console.log("Received request to create task.");
         next();
       }, taskControllerInstance.createTask);
-       taskRouter.get('/tasks', authenticateToken, authorizeRole('user','admin'), taskControllerInstance.getTasks);
+      taskRouter.put('/task/:id/move', authenticateToken, taskControllerInstance.moveTaskState);
+
+// Archivar tarea (solo admin)
+      taskRouter.put('/task/:id/archive', authenticateToken,authorizeRole('admin'), taskControllerInstance.archiveTask);
+      taskRouter.get('/task', authenticateToken, authorizeRole('user','admin'), taskControllerInstance.getTasks);
   return taskRouter;
 };

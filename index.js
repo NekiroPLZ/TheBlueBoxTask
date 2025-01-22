@@ -1,8 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors"; // Importado una sola vez
-import { userService } from "./src/services/userService.js";
-import { userModel } from "./src/models/UserModels.js";
 import { UserRouterOpt } from "./src/routes/userRoutes.js";
 import { PORT } from "./src/config/config.js";
 import { TaskRouterOpt } from "./src/routes/taskRoutes.js";
