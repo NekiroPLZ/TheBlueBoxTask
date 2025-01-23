@@ -11,6 +11,3 @@ const userSchema = z.object({
 export const validateUserData = (object)=>{
     return userSchema.safeParse(object);
 }
-// export const validatePartialUserData = (object)=>{
-//     return userSchema.partial().safeParse(object);
-// }

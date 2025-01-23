@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from "cors"; // Importado una sola vez
+import cors from "cors"; 
 import { UserRouterOpt } from "./src/routes/userRoutes.js";
 import { PORT } from "./src/config/config.js";
 import { TaskRouterOpt } from "./src/routes/taskRoutes.js";
@@ -16,7 +16,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
 app.use((err, req, res, next) => {
   console.error(err);
   res
@@ -24,10 +23,13 @@ app.use((err, req, res, next) => {
     .json({ message: "Internal server error", error: err.message });
   next();
 });
+const basePath = process.env.NODE_ENV === "test" ? "" : "/thebluebox";
+app.use(`${basePath}`, UserRouterOpt());
+app.use(`${basePath}`, TaskRouterOpt());
+export default app;
+if(process.env.NODE_ENV !== "test"){
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+  }
 
-app.use("/thebluebox", UserRouterOpt());
-app.use("/thebluebox", TaskRouterOpt());
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});

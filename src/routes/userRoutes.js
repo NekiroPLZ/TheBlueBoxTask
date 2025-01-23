@@ -5,17 +5,10 @@ import { userModel } from "../models/UserModels.js";
 
 export const UserRouterOpt = () => {
   const userRouter = Router();
-
-  // Inyección de dependencias
   const userServiceInstance = new userService({ userModel });
-  const userControllerInstance = new userController( userServiceInstance);
-
-  // Rutas
+  const userControllerInstance = new userController(userServiceInstance);
   userRouter.post("/register", userControllerInstance.createUser);
   userRouter.post("/login", userControllerInstance.loginUser);
- 
-//   userRouter.get("/protected", userController.mainSite); // Suponiendo que mainSite está definido en UserController
-//   userRouter.post("/logout", userController.logoutUser); // Suponiendo que logoutUser está definido en UserController
-
+  console.log("User routes initialized under /thebluebox");
   return userRouter;
 };

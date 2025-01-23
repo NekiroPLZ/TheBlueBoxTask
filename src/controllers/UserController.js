@@ -8,7 +8,6 @@ export class userController {
   }
   createUser = async (req, res) => {
     try {
-      // console.log('Received data in createUser:', req.body);
       const validateResult = validateUserData(req.body);
       const { success, data, error } = validateResult;
       if (!success) {
@@ -22,7 +21,18 @@ export class userController {
         first_name,
         last_name
       );
-      res.status(201).json({ message: "User created", user: newUser });
+      const token = jwt.sign(
+        { id: newUser.id, email: newUser.email, role: newUser.role },
+        process.env.SECRET_JWT_KEY,
+        { expiresIn: "1h" }
+      );
+      console.log("User created:", newUser);
+
+      res.status(201).json({
+        message: "User created",
+        user: newUser,
+        token,
+      });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -31,7 +41,6 @@ export class userController {
     try {
       const { email, password } = req.body;
       const user = await this.userService.getUserByEmail(email);
-      // console.log("Fetched user:", user);
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -45,16 +54,12 @@ export class userController {
         return res.status(401).json({ message: "Invalid password" });
       }
       const token = jwt.sign(
-        {  id: user.id, email: user.email, role: user.role }, 
+        { id: user.id, email: user.email, role: user.role },
         SECRET_JWT_KEY,
         { expiresIn: "1h" }
       );
-      console.log("Token generated:", token);
-      
-      
       res.status(200).json({ message: "Login successful", user, token });
     } catch (error) {
-      console.log(error);
       res.status(500).json(error);
     }
   };

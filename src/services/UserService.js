@@ -26,7 +26,6 @@ export class userService{
     };
     getUserByEmail = async (email) => {
         try {
-            console.log("Searching for email:", email); // Agrega este log
             const userEmail = await this.userModel.getUserByEmail(email);
             if (!userEmail) {
                 throw new Error('User not found');

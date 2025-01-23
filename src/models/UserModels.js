@@ -18,7 +18,6 @@ export class userModel {
       throw new Error(err.message);
     }
   }
-
   static async getUserByEmail(email) {
     try {
       const query = `select id, email, password,role, first_name, last_name, created_at from users where email = $1`;
